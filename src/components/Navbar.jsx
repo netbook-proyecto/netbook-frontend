@@ -1,5 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import {
+  ROLES_VER_ESTUDIANTES,
+  ROLES_VER_APODERADOS,
+  ROLES_MATRICULAS,
+  ROLES_CONFIGURACION,
+} from "../utils/permisos";
 
 export default function Navbar() {
   const { usuario, logout } = useAuth();
@@ -16,9 +22,23 @@ export default function Navbar() {
 
       {usuario && (
         <div className="navbar-links">
-          <Link to="/estudiantes">Estudiantes</Link>
-          <Link to="/apoderados">Apoderados</Link>
-          <Link to="/matriculas">Matrículas</Link>
+          <Link to="/mi-perfil">Mi Perfil</Link>
+
+          {ROLES_VER_ESTUDIANTES.includes(usuario.rol) && (
+            <Link to="/estudiantes">Estudiantes</Link>
+          )}
+
+          {ROLES_VER_APODERADOS.includes(usuario.rol) && (
+            <Link to="/apoderados">Apoderados</Link>
+          )}
+
+          {ROLES_MATRICULAS.includes(usuario.rol) && (
+            <Link to="/matriculas">Matrículas</Link>
+          )}
+
+          {ROLES_CONFIGURACION.includes(usuario.rol) && (
+            <Link to="/configuracion">Configuración</Link>
+          )}
         </div>
       )}
 
