@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import estudiantesApi from "../api/estudiantesApi";
-import academicoApi from "../api/academicoApi";
 import { useAuth } from "../context/AuthContext";
 
 export default function MiPerfil() {
@@ -13,26 +12,24 @@ export default function MiPerfil() {
       setCargando(true);
 
       try {
-        if (usuario.rol === "DOCENTE") {
-          const response = await academicoApi.get("/docentes/mi-perfil", {
-            params: { correo: usuario.correo },
-          });
-          setDatos(response.data);
-        }
-
         if (usuario.rol === "ESTUDIANTE") {
-          const response = await estudiantesApi.get("/estudiantes/mi-perfil", {
-            params: { correo: usuario.correo },
-          });
-          setDatos(response.data);
+          const response = await estudiantesApi.get("/estudiantes");
+          const lista = response.data;
+          const encontrado = lista.find(
+            (e) => e.correoInstitucional === usuario.correo
+          );
+          setDatos(encontrado || null);
         }
 
         if (usuario.rol === "APODERADO") {
-          const response = await estudiantesApi.get("/apoderados/mi-perfil", {
-            params: { correo: usuario.correo },
-          });
-          setDatos(response.data);
+          const response = await estudiantesApi.get("/apoderados");
+          const lista = response.data;
+          const encontrado = lista.find(
+            (a) => a.correoInstitucional === usuario.correo
+          );
+          setDatos(encontrado || null);
         }
+
       } catch (err) {
         setDatos(null);
       } finally {
@@ -48,25 +45,25 @@ export default function MiPerfil() {
       <h2>Mi Perfil</h2>
 
       <div className="tarjeta-perfil">
-        <p><strong>Correo institucional:</strong> {usuario.correo}</p>
+        <p><strong>Correo:</strong> {usuario.correo}</p>
         <p><strong>Rol:</strong> {usuario.rol}</p>
       </div>
 
       {cargando && <p>Cargando datos...</p>}
 
-      {datos && usuario.rol === "DOCENTE" && (
+      {(usuario.rol === "ADMIN" ||
+        usuario.rol === "DOCENTE" ||
+        usuario.rol === "INSPECTOR" ||
+        usuario.rol === "DIRECTIVO") && (
         <div className="tarjeta-perfil">
-          <p><strong>RUT:</strong> {datos.rut}</p>
-          <p><strong>Nombre completo:</strong> {datos.nombres} {datos.apellidoPaterno} {datos.apellidoMaterno}</p>
-          <p><strong>Título profesional:</strong> {datos.tituloProfesional}</p>
-          <p><strong>Especialidad:</strong> {datos.especialidad}</p>
+          <p>Tienes acceso completo al sistema como <strong>{usuario.rol}</strong>.</p>
         </div>
       )}
 
       {datos && usuario.rol === "ESTUDIANTE" && (
         <div className="tarjeta-perfil">
           <p><strong>RUT:</strong> {datos.rut}</p>
-          <p><strong>Nombre completo:</strong> {datos.nombres} {datos.apellidoPaterno} {datos.apellidoMaterno}</p>
+          <p><strong>Nombre:</strong> {datos.nombres} {datos.apellidoPaterno} {datos.apellidoMaterno}</p>
           <p><strong>Curso:</strong> {datos.idCurso ?? "Sin asignar"}</p>
         </div>
       )}
@@ -74,15 +71,17 @@ export default function MiPerfil() {
       {datos && usuario.rol === "APODERADO" && (
         <div className="tarjeta-perfil">
           <p><strong>RUT:</strong> {datos.rut}</p>
-          <p><strong>Nombre completo:</strong> {datos.nombres} {datos.apellidoPaterno} {datos.apellidoMaterno}</p>
-          <p><strong>Teléfono de contacto:</strong> {datos.telefonoContacto}</p>
+          <p><strong>Nombre:</strong> {datos.nombres} {datos.apellidoPaterno} {datos.apellidoMaterno}</p>
+          <p><strong>Teléfono:</strong> {datos.telefonoContacto}</p>
         </div>
       )}
 
-      {!cargando && !datos && (
-        <p className="ayuda">
-          Todavía no hay datos adicionales cargados para tu usuario.
-        </p>
+      {!cargando && !datos &&
+        usuario.rol !== "ADMIN" &&
+        usuario.rol !== "DOCENTE" &&
+        usuario.rol !== "INSPECTOR" &&
+        usuario.rol !== "DIRECTIVO" && (
+        <p className="ayuda">No se encontraron datos para tu usuario.</p>
       )}
     </div>
   );

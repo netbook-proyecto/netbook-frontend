@@ -4,7 +4,7 @@ import estudiantesApi from "../api/estudiantesApi";
 const FORMULARIO_VACIO = {
   fechaMatricula: "",
   annoAcademico: new Date().getFullYear(),
-  estadoMatricula: "VIGENTE",
+  estadoMatricula: "ACTIVA",
   tipoMatricula: "REGULAR",
   idEstudiante: "",
   idApoderado: "",
@@ -17,6 +17,7 @@ export default function Matriculas() {
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
 
   async function cargarDatos() {
     try {
@@ -42,6 +43,18 @@ export default function Matriculas() {
     setFormulario((prev) => ({ ...prev, [name]: value }));
   }
 
+  function handleEditar(mat) {
+    setEditandoId(mat.idMatricula);
+    setFormulario({
+      fechaMatricula: mat.fechaMatricula,
+      annoAcademico: mat.annoAcademico,
+      estadoMatricula: mat.estadoMatricula,
+      tipoMatricula: mat.tipoMatricula,
+      idEstudiante: mat.estudiante?.idUsuario ?? "",
+      idApoderado: mat.apoderado?.idUsuario ?? "",
+    });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
@@ -54,7 +67,14 @@ export default function Matriculas() {
         idEstudiante: Number(formulario.idEstudiante),
         idApoderado: Number(formulario.idApoderado),
       };
-      await estudiantesApi.post("/matriculas", datosAEnviar);
+
+      if (editandoId) {
+        await estudiantesApi.put(`/matriculas/${editandoId}`, datosAEnviar);
+        setEditandoId(null);
+      } else {
+        await estudiantesApi.post("/matriculas", datosAEnviar);
+      }
+
       setFormulario(FORMULARIO_VACIO);
       cargarDatos();
     } catch (err) {
@@ -102,8 +122,8 @@ export default function Matriculas() {
           value={formulario.estadoMatricula}
           onChange={handleChange}
         >
-          <option value="VIGENTE">VIGENTE</option>
-          <option value="ANULADA">ANULADA</option>
+          <option value="ACTIVA">ACTIVA</option>
+          <option value="INACTIVA">INACTIVA</option>
           <option value="PENDIENTE">PENDIENTE</option>
         </select>
         <select
@@ -144,8 +164,20 @@ export default function Matriculas() {
         </select>
 
         <button type="submit" disabled={cargando}>
-          {cargando ? "Guardando..." : "Agregar matrícula"}
+          {cargando ? "Guardando..." : editandoId ? "Actualizar matrícula" : "Agregar matrícula"}
         </button>
+
+        {editandoId && (
+          <button
+            type="button"
+            onClick={() => {
+              setEditandoId(null);
+              setFormulario(FORMULARIO_VACIO);
+            }}
+          >
+            Cancelar
+          </button>
+        )}
       </form>
 
       {error && <p className="mensaje-error">{error}</p>}
@@ -174,6 +206,12 @@ export default function Matriculas() {
               <td>{mat.estudiante?.nombres ?? "-"}</td>
               <td>{mat.apoderado?.nombres ?? "-"}</td>
               <td>
+                <button
+                  className="boton-secundario"
+                  onClick={() => handleEditar(mat)}
+                >
+                  Editar
+                </button>
                 <button
                   className="boton-peligro"
                   onClick={() => handleEliminar(mat.idMatricula)}

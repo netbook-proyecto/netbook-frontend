@@ -17,6 +17,7 @@ export default function Estudiantes() {
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
 
   async function cargarEstudiantes() {
     try {
@@ -33,7 +34,32 @@ export default function Estudiantes() {
 
   function handleChange(e) {
     const { name, value } = e.target;
+
+    if (name === "rut"){
+      const soloNumeros = value.replace(/[^0-9kK]/g, "");
+      let rutFormateado = soloNumeros;
+      if (soloNumeros.length > 1) {
+        rutFormateado = soloNumeros.slice(0, -1) + "-" + soloNumeros.slice(-1);
+      }
+      setFormulario((prev) => ({ ...prev, [name]: rutFormateado }));
+      return;
+
+    }
     setFormulario((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleEditar(est) {
+    setEditandoId(est.idUsuario);
+    setFormulario({
+      rut: est.rut,
+      nombres: est.nombres,
+      apellidoPaterno: est.apellidoPaterno,
+      apellidoMaterno: est.apellidoMaterno,
+      correoInstitucional: est.correoInstitucional,
+      fechaNacimiento: est.fechaNacimiento,
+      telefonoEmergencia: est.telefonoEmergencia,
+      idCurso: est.idCurso ?? "",
+    });
   }
 
   async function handleSubmit(e) {
@@ -46,7 +72,14 @@ export default function Estudiantes() {
         ...formulario,
         idCurso: formulario.idCurso ? Number(formulario.idCurso) : null,
       };
-      await estudiantesApi.post("/estudiantes", datosAEnviar);
+
+      if (editandoId) {
+        await estudiantesApi.put(`/estudiantes/${editandoId}`, datosAEnviar);
+        setEditandoId(null);
+      } else {
+        await estudiantesApi.post("/estudiantes", datosAEnviar);
+      }
+
       setFormulario(FORMULARIO_VACIO);
       cargarEstudiantes();
     } catch (err) {
@@ -84,12 +117,25 @@ export default function Estudiantes() {
         <input name="idCurso" type="number" placeholder="ID Curso (opcional)" value={formulario.idCurso} onChange={handleChange} />
 
         <button type="submit" disabled={cargando}>
-          {cargando ? "Guardando..." : "Agregar estudiante"}
+          {cargando ? "Guardando..." : editandoId ? "Actualizar estudiante" : "Agregar estudiante"}
         </button>
+
+        {editandoId && (
+          <button
+            type="button"
+            onClick={() => {
+              setEditandoId(null);
+              setFormulario(FORMULARIO_VACIO);
+            }}
+          >
+            Cancelar
+          </button>
+        )}
       </form>
 
       {error && <p className="mensaje-error">{error}</p>}
-
+      
+      <div className="tabla-wrapper">
       <table className="tabla">
         <thead>
           <tr>
@@ -110,6 +156,9 @@ export default function Estudiantes() {
               <td>{est.correoInstitucional}</td>
               <td>{est.idCurso ?? "-"}</td>
               <td>
+                <button className="boton-secundario" onClick={() => handleEditar(est)}>
+                  Editar
+                </button>
                 <button className="boton-peligro" onClick={() => handleEliminar(est.idUsuario)}>
                   Eliminar
                 </button>
@@ -123,6 +172,7 @@ export default function Estudiantes() {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

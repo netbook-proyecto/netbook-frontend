@@ -17,6 +17,7 @@ export default function Apoderados() {
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
 
   async function cargarApoderados() {
     try {
@@ -32,8 +33,34 @@ export default function Apoderados() {
   }, []);
 
   function handleChange(e) {
-    const { name, value } = e.target;
-    setFormulario((prev) => ({ ...prev, [name]: value }));
+  const { name, value } = e.target;
+
+  if (name === "rut") {
+    const soloNumeros = value.replace(/[^0-9kK]/g, "");
+    let rutFormateado = soloNumeros;
+    if (soloNumeros.length > 1) {
+      rutFormateado =
+        soloNumeros.slice(0, -1) + "-" + soloNumeros.slice(-1);
+    }
+    setFormulario((prev) => ({ ...prev, rut: rutFormateado }));
+    return;
+  }
+
+  setFormulario((prev) => ({ ...prev, [name]: value }));
+}
+
+  function handleEditar(ap) {
+    setEditandoId(ap.idUsuario);
+    setFormulario({
+      rut: ap.rut,
+      nombres: ap.nombres,
+      apellidoPaterno: ap.apellidoPaterno,
+      apellidoMaterno: ap.apellidoMaterno,
+      correoInstitucional: ap.correoInstitucional,
+      parentesco: ap.parentesco,
+      telefonoContacto: ap.telefonoContacto,
+      ocupacion: ap.ocupacion,
+    });
   }
 
   async function handleSubmit(e) {
@@ -42,7 +69,13 @@ export default function Apoderados() {
     setCargando(true);
 
     try {
-      await estudiantesApi.post("/apoderados", formulario);
+      if (editandoId) {
+        await estudiantesApi.put(`/apoderados/${editandoId}`, formulario);
+        setEditandoId(null);
+      } else {
+        await estudiantesApi.post("/apoderados", formulario);
+      }
+
       setFormulario(FORMULARIO_VACIO);
       cargarApoderados();
     } catch (err) {
@@ -80,8 +113,20 @@ export default function Apoderados() {
         <input name="ocupacion" placeholder="Ocupación" value={formulario.ocupacion} onChange={handleChange} required />
 
         <button type="submit" disabled={cargando}>
-          {cargando ? "Guardando..." : "Agregar apoderado"}
+          {cargando ? "Guardando..." : editandoId ? "Actualizar apoderado" : "Agregar apoderado"}
         </button>
+
+        {editandoId && (
+          <button
+            type="button"
+            onClick={() => {
+              setEditandoId(null);
+              setFormulario(FORMULARIO_VACIO);
+            }}
+          >
+            Cancelar
+          </button>
+        )}
       </form>
 
       {error && <p className="mensaje-error">{error}</p>}
@@ -106,6 +151,9 @@ export default function Apoderados() {
               <td>{ap.parentesco}</td>
               <td>{ap.telefonoContacto}</td>
               <td>
+                <button className="boton-secundario" onClick={() => handleEditar(ap)}>
+                  Editar
+                </button>
                 <button className="boton-peligro" onClick={() => handleEliminar(ap.idUsuario)}>
                   Eliminar
                 </button>
