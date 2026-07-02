@@ -6,17 +6,28 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Estudiantes from "./pages/Estudiantes";
+import Anotaciones from "./pages/Anotaciones";
 import Apoderados from "./pages/Apoderados";
 import Matriculas from "./pages/Matriculas";
 import MiPerfil from "./pages/MiPerfil";
 import Configuracion from "./pages/Configuracion";
 import SinPermiso from "./pages/SinPermiso";
 
+import Niveles from "./pages/Niveles";
+import Salas from "./pages/Salas";
+import Cursos from "./pages/Cursos";
+import Asignaturas from "./pages/Asignaturas";
+import Evaluaciones from "./pages/Evaluaciones";
+import Notas from "./pages/Notas";
+
 import {
   ROLES_VER_ESTUDIANTES,
   ROLES_VER_APODERADOS,
+  ROLES_VER_ANOTACIONES,
   ROLES_MATRICULAS,
   ROLES_CONFIGURACION,
+  ROLES_VER_ACADEMICO,
+  ROLES_VER_NOTAS,
 } from "./utils/permisos";
 
 import "./App.css";
@@ -31,6 +42,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/sin-permiso" element={<SinPermiso />} />
+          <Route path="/niveles" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Niveles /></RutaPrivada>} />
+          <Route path="/salas" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Salas /></RutaPrivada>} />
+          <Route path="/cursos" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Cursos /></RutaPrivada>} />
+          <Route path="/asignaturas" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Asignaturas /></RutaPrivada>} />
+          <Route path="/evaluaciones" element={<RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}><Evaluaciones /></RutaPrivada>} />
+          <Route path="/notas" element={<RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}><Notas /></RutaPrivada>} />
 
           {/* Todos los roles logueados pueden ver su propio perfil */}
           <Route
@@ -47,6 +64,14 @@ function App() {
             element={
               <RutaPrivada rolesPermitidos={ROLES_VER_ESTUDIANTES}>
                 <Estudiantes />
+              </RutaPrivada>
+            }
+          />
+          <Route
+            path="/anotaciones"
+            element={
+              <RutaPrivada rolesPermitidos={ROLES_VER_ANOTACIONES}>
+                <Anotaciones />
               </RutaPrivada>
             }
           />

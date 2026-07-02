@@ -12,6 +12,19 @@ export const ROLES_MATRICULAS = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 // Configuración del sistema: solo Admin
 export const ROLES_CONFIGURACION = ["ADMIN"];
 
+// Anotaciones: Docente, Inspector, Directivo y Admin pueden ENTRAR a ver
+// (asumido igual que Estudiantes; ajusta si tu profe pide otra cosa)
+export const ROLES_VER_ANOTACIONES = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_ANOTACIONES = ["DOCENTE", "INSPECTOR", "ADMIN"];
+
+// Académico: catálogo base (niveles, salas, cursos, asignaturas)
+export const ROLES_VER_ACADEMICO = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_ACADEMICO = ["INSPECTOR", "ADMIN"];
+
+// Evaluaciones y Notas: las gestiona quien califica
+export const ROLES_VER_NOTAS = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_NOTAS = ["DOCENTE", "ADMIN"];
+
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 export function puedeEditar(rol, listaRolesConPermisoCrud) {
   return listaRolesConPermisoCrud.includes(rol);
