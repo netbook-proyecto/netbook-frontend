@@ -6,6 +6,9 @@ import {
   ROLES_VER_APODERADOS,
   ROLES_MATRICULAS,
   ROLES_CONFIGURACION,
+  ROLES_VER_ANOTACIONES,
+  ROLES_VER_ACADEMICO,
+  ROLES_VER_NOTAS,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -23,6 +26,10 @@ export default function Sidebar() {
     return location.pathname === path ? "sidebar-link activo" : "sidebar-link";
   }
 
+  function cerrar() {
+    setAbierto(false);
+  }
+
   return (
     <>
       <button
@@ -34,12 +41,7 @@ export default function Sidebar() {
         <span></span>
       </button>
 
-      {abierto && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setAbierto(false)}
-        />
-      )}
+      {abierto && <div className="sidebar-overlay" onClick={cerrar} />}
 
       <aside className={`sidebar ${abierto ? "sidebar--abierto" : ""}`}>
         <div className="sidebar-logo">
@@ -61,66 +63,78 @@ export default function Sidebar() {
 
         <nav className="sidebar-nav">
           <p className="sidebar-seccion">Principal</p>
-
-          <Link
-            to="/dashboard"
-            className={esActivo("/dashboard")}
-            onClick={() => setAbierto(false)}
-          >
-            <span></span> Panel General
+          <Link to="/dashboard" className={esActivo("/dashboard")} onClick={cerrar}>
+            📊 Panel General
           </Link>
-
-          <Link
-            to="/mi-perfil"
-            className={esActivo("/mi-perfil")}
-            onClick={() => setAbierto(false)}
-          >
-            <span>👤</span> Mi Perfil
+          <Link to="/mi-perfil" className={esActivo("/mi-perfil")} onClick={cerrar}>
+            👤 Mi Perfil
           </Link>
 
           {usuario && (
             <>
-              <p className="sidebar-seccion">Gestión</p>
+              {(ROLES_VER_ESTUDIANTES.includes(usuario.rol) ||
+                ROLES_VER_APODERADOS.includes(usuario.rol) ||
+                ROLES_MATRICULAS.includes(usuario.rol) ||
+                ROLES_VER_ANOTACIONES.includes(usuario.rol)) && (
+                <p className="sidebar-seccion">Gestión</p>
+              )}
 
               {ROLES_VER_ESTUDIANTES.includes(usuario.rol) && (
-                <Link
-                  to="/estudiantes"
-                  className={esActivo("/estudiantes")}
-                  onClick={() => setAbierto(false)}
-                >
-                  <span></span> Estudiantes
+                <Link to="/estudiantes" className={esActivo("/estudiantes")} onClick={cerrar}>
+                  👨‍🎓 Estudiantes
                 </Link>
               )}
-
               {ROLES_VER_APODERADOS.includes(usuario.rol) && (
-                <Link
-                  to="/apoderados"
-                  className={esActivo("/apoderados")}
-                  onClick={() => setAbierto(false)}
-                >
-                  <span></span> Apoderados
+                <Link to="/apoderados" className={esActivo("/apoderados")} onClick={cerrar}>
+                  👨‍👩‍👧 Apoderados
+                </Link>
+              )}
+              {ROLES_MATRICULAS.includes(usuario.rol) && (
+                <Link to="/matriculas" className={esActivo("/matriculas")} onClick={cerrar}>
+                  📝 Matrículas
+                </Link>
+              )}
+              {ROLES_VER_ANOTACIONES.includes(usuario.rol) && (
+                <Link to="/anotaciones" className={esActivo("/anotaciones")} onClick={cerrar}>
+                  ⚠️ Anotaciones
                 </Link>
               )}
 
-              {ROLES_MATRICULAS.includes(usuario.rol) && (
-                <Link
-                  to="/matriculas"
-                  className={esActivo("/matriculas")}
-                  onClick={() => setAbierto(false)}
-                >
-                  <span></span> Matrículas
-                </Link>
+              {ROLES_VER_ACADEMICO.includes(usuario.rol) && (
+                <>
+                  <p className="sidebar-seccion">Académico</p>
+                  <Link to="/cursos" className={esActivo("/cursos")} onClick={cerrar}>
+                    🏫 Cursos
+                  </Link>
+                  <Link to="/niveles" className={esActivo("/niveles")} onClick={cerrar}>
+                    📚 Niveles
+                  </Link>
+                  <Link to="/salas" className={esActivo("/salas")} onClick={cerrar}>
+                    🚪 Salas
+                  </Link>
+                  <Link to="/asignaturas" className={esActivo("/asignaturas")} onClick={cerrar}>
+                    📖 Asignaturas
+                  </Link>
+                </>
+              )}
+
+              {ROLES_VER_NOTAS.includes(usuario.rol) && (
+                <>
+                  <p className="sidebar-seccion">Evaluación</p>
+                  <Link to="/evaluaciones" className={esActivo("/evaluaciones")} onClick={cerrar}>
+                    📋 Evaluaciones
+                  </Link>
+                  <Link to="/notas" className={esActivo("/notas")} onClick={cerrar}>
+                    📈 Notas
+                  </Link>
+                </>
               )}
 
               {ROLES_CONFIGURACION.includes(usuario.rol) && (
                 <>
                   <p className="sidebar-seccion">Sistema</p>
-                  <Link
-                    to="/configuracion"
-                    className={esActivo("/configuracion")}
-                    onClick={() => setAbierto(false)}
-                  >
-                    <span></span> Configuración
+                  <Link to="/configuracion" className={esActivo("/configuracion")} onClick={cerrar}>
+                    ⚙️ Configuración
                   </Link>
                 </>
               )}
@@ -130,7 +144,7 @@ export default function Sidebar() {
 
         <div className="sidebar-footer">
           <button className="sidebar-logout" onClick={handleLogout}>
-            <span></span> Cerrar sesión
+            🚪 Cerrar sesión
           </button>
         </div>
       </aside>

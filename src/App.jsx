@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import RutaPrivada from "./components/RutaPrivada";
-import Navbar from "./components/Navbar";
+import Layout from "./components/Layout";
 
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
+import Dashboard from "./pages/Dashboard";
 import Estudiantes from "./pages/Estudiantes";
 import Anotaciones from "./pages/Anotaciones";
 import Apoderados from "./pages/Apoderados";
@@ -12,7 +13,6 @@ import Matriculas from "./pages/Matriculas";
 import MiPerfil from "./pages/MiPerfil";
 import Configuracion from "./pages/Configuracion";
 import SinPermiso from "./pages/SinPermiso";
-
 import Niveles from "./pages/Niveles";
 import Salas from "./pages/Salas";
 import Cursos from "./pages/Cursos";
@@ -36,69 +36,90 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/sin-permiso" element={<SinPermiso />} />
-          <Route path="/niveles" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Niveles /></RutaPrivada>} />
-          <Route path="/salas" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Salas /></RutaPrivada>} />
-          <Route path="/cursos" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Cursos /></RutaPrivada>} />
-          <Route path="/asignaturas" element={<RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}><Asignaturas /></RutaPrivada>} />
-          <Route path="/evaluaciones" element={<RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}><Evaluaciones /></RutaPrivada>} />
-          <Route path="/notas" element={<RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}><Notas /></RutaPrivada>} />
 
-          {/* Todos los roles logueados pueden ver su propio perfil */}
-          <Route
-            path="/mi-perfil"
-            element={
-              <RutaPrivada>
-                <MiPerfil />
-              </RutaPrivada>
-            }
-          />
+          <Route path="/dashboard" element={
+            <RutaPrivada>
+              <Layout><Dashboard /></Layout>
+            </RutaPrivada>
+          } />
 
-          <Route
-            path="/estudiantes"
-            element={
-              <RutaPrivada rolesPermitidos={ROLES_VER_ESTUDIANTES}>
-                <Estudiantes />
-              </RutaPrivada>
-            }
-          />
-          <Route
-            path="/anotaciones"
-            element={
-              <RutaPrivada rolesPermitidos={ROLES_VER_ANOTACIONES}>
-                <Anotaciones />
-              </RutaPrivada>
-            }
-          />
-          <Route
-            path="/apoderados"
-            element={
-              <RutaPrivada rolesPermitidos={ROLES_VER_APODERADOS}>
-                <Apoderados />
-              </RutaPrivada>
-            }
-          />
-          <Route
-            path="/matriculas"
-            element={
-              <RutaPrivada rolesPermitidos={ROLES_MATRICULAS}>
-                <Matriculas />
-              </RutaPrivada>
-            }
-          />
-          <Route
-            path="/configuracion"
-            element={
-              <RutaPrivada rolesPermitidos={ROLES_CONFIGURACION}>
-                <Configuracion />
-              </RutaPrivada>
-            }
-          />
+          <Route path="/mi-perfil" element={
+            <RutaPrivada>
+              <Layout><MiPerfil /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/estudiantes" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ESTUDIANTES}>
+              <Layout><Estudiantes /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/apoderados" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_APODERADOS}>
+              <Layout><Apoderados /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/anotaciones" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ANOTACIONES}>
+              <Layout><Anotaciones /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/matriculas" element={
+            <RutaPrivada rolesPermitidos={ROLES_MATRICULAS}>
+              <Layout><Matriculas /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/configuracion" element={
+            <RutaPrivada rolesPermitidos={ROLES_CONFIGURACION}>
+              <Layout><Configuracion /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/niveles" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}>
+              <Layout><Niveles /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/salas" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}>
+              <Layout><Salas /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/cursos" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}>
+              <Layout><Cursos /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/asignaturas" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ACADEMICO}>
+              <Layout><Asignaturas /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/evaluaciones" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}>
+              <Layout><Evaluaciones /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/notas" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}>
+              <Layout><Notas /></Layout>
+            </RutaPrivada>
+          } />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
