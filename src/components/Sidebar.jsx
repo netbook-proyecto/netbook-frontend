@@ -10,6 +10,7 @@ import {
   ROLES_VER_ACADEMICO,
   ROLES_VER_NOTAS,
   ROLES_VER_ASISTENCIA,
+  ROLES_VER_MENSAJERIA,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -70,6 +71,11 @@ export default function Sidebar() {
           <Link to="/mi-perfil" className={esActivo("/mi-perfil")} onClick={cerrar}>
             👤 Mi Perfil
           </Link>
+          {ROLES_VER_MENSAJERIA.includes(usuario.rol) && (
+            <Link to="/mensajeria" className={esActivo("/mensajeria")} onClick={cerrar}>
+              ✉️ Mensajería
+            </Link>
+          )}
 
           {usuario && (
             <>

@@ -33,6 +33,8 @@ export const ROLES_CRUD_BITACORA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"
 export const ROLES_VER_ASISTENCIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_ASISTENCIA = ["DOCENTE", "INSPECTOR", "ADMIN"];
 
+// Mensajería: todos los roles logueados pueden usarla (enviar y ver los propios)
+export const ROLES_VER_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
 
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 export function puedeEditar(rol, listaRolesConPermisoCrud) {

@@ -21,6 +21,7 @@ import Evaluaciones from "./pages/Evaluaciones";
 import Notas from "./pages/Notas";
 import Bitacora from "./pages/Bitacora";
 import Asistencia from "./pages/Asistencia";
+import Mensajeria from "./pages/Mensajeria";
 
 import {
   ROLES_VER_ESTUDIANTES,
@@ -32,6 +33,7 @@ import {
   ROLES_VER_NOTAS,
   ROLES_VER_BITACORA,
   ROLES_VER_ASISTENCIA,
+  ROLES_VER_MENSAJERIA,
 } from "./utils/permisos";
 
 import "./App.css";
@@ -73,6 +75,11 @@ function App() {
           <Route path="/anotaciones" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_ANOTACIONES}>
               <Layout><Anotaciones /></Layout>
+            </RutaPrivada>
+          } />
+          <Route path="/mensajeria" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_MENSAJERIA}>
+              <Layout><Mensajeria /></Layout>
             </RutaPrivada>
           } />
 
