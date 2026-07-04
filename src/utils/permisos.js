@@ -25,6 +25,15 @@ export const ROLES_CRUD_ACADEMICO = ["INSPECTOR", "ADMIN"];
 export const ROLES_VER_NOTAS = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_NOTAS = ["DOCENTE", "ADMIN"];
 
+// Bitácora: Docente puede ver y crear (es quien registra la clase)
+export const ROLES_VER_BITACORA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_BITACORA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+
+// Asistencia: Inspector y Docente pueden registrar
+export const ROLES_VER_ASISTENCIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_ASISTENCIA = ["DOCENTE", "INSPECTOR", "ADMIN"];
+
+
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 export function puedeEditar(rol, listaRolesConPermisoCrud) {
   return listaRolesConPermisoCrud.includes(rol);

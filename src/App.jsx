@@ -19,6 +19,8 @@ import Cursos from "./pages/Cursos";
 import Asignaturas from "./pages/Asignaturas";
 import Evaluaciones from "./pages/Evaluaciones";
 import Notas from "./pages/Notas";
+import Bitacora from "./pages/Bitacora";
+import Asistencia from "./pages/Asistencia";
 
 import {
   ROLES_VER_ESTUDIANTES,
@@ -28,6 +30,8 @@ import {
   ROLES_CONFIGURACION,
   ROLES_VER_ACADEMICO,
   ROLES_VER_NOTAS,
+  ROLES_VER_BITACORA,
+  ROLES_VER_ASISTENCIA,
 } from "./utils/permisos";
 
 import "./App.css";
@@ -117,6 +121,16 @@ function App() {
           <Route path="/notas" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_NOTAS}>
               <Layout><Notas /></Layout>
+            </RutaPrivada>
+          } />
+          <Route path="/bitacora" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_BITACORA}>
+              <Layout><Bitacora /></Layout>
+            </RutaPrivada>
+          } />
+          <Route path="/asistencia" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_ASISTENCIA}>
+              <Layout><Asistencia /></Layout>
             </RutaPrivada>
           } />
 
