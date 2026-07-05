@@ -8,6 +8,7 @@ import Registro from "./pages/Registro";
 import Dashboard from "./pages/Dashboard";
 import Estudiantes from "./pages/Estudiantes";
 import Anotaciones from "./pages/Anotaciones";
+import Mensajeria from "./pages/Mensajeria";
 import Apoderados from "./pages/Apoderados";
 import Matriculas from "./pages/Matriculas";
 import MiPerfil from "./pages/MiPerfil";

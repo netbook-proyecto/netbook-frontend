@@ -36,6 +36,10 @@ export const ROLES_CRUD_ASISTENCIA = ["DOCENTE", "INSPECTOR", "ADMIN"];
 export const ROLES_VER_VIDA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_VIDA = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 
+// Mensajería: todos los roles logueados pueden usarla (enviar y ver los propios)
+export const ROLES_VER_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
+export const ROLES_CRUD_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
+
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 // Normaliza mayúsculas/minúsculas y espacios extra para evitar falsos negativos
 // si el backend manda el rol con formato distinto (ej: "admin", " ADMIN ", "Admin").
