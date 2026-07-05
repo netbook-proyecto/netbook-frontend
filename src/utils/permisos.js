@@ -12,8 +12,7 @@ export const ROLES_MATRICULAS = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 // Configuración del sistema: solo Admin
 export const ROLES_CONFIGURACION = ["ADMIN"];
 
-// Anotaciones: Docente, Inspector, Directivo y Admin pueden ENTRAR a ver
-// (asumido igual que Estudiantes; ajusta si tu profe pide otra cosa)
+// Anotaciones
 export const ROLES_VER_ANOTACIONES = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_ANOTACIONES = ["DOCENTE", "INSPECTOR", "ADMIN"];
 
@@ -21,22 +20,29 @@ export const ROLES_CRUD_ANOTACIONES = ["DOCENTE", "INSPECTOR", "ADMIN"];
 export const ROLES_VER_ACADEMICO = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_ACADEMICO = ["INSPECTOR", "ADMIN"];
 
-// Evaluaciones y Notas: las gestiona quien califica
+// Evaluaciones y Notas
 export const ROLES_VER_NOTAS = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_NOTAS = ["DOCENTE", "ADMIN"];
 
-// Bitácora: Docente puede ver y crear (es quien registra la clase)
+// Bitácora
 export const ROLES_VER_BITACORA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
-export const ROLES_CRUD_BITACORA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_BITACORA = ["DOCENTE", "INSPECTOR", "ADMIN"];
 
-// Asistencia: Inspector y Docente pueden registrar
+// Asistencia
 export const ROLES_VER_ASISTENCIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_CRUD_ASISTENCIA = ["DOCENTE", "INSPECTOR", "ADMIN"];
 
-// Mensajería: todos los roles logueados pueden usarla (enviar y ver los propios)
-export const ROLES_VER_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
+// Hoja de Vida (antecedentes generales, médicos y académicos del estudiante)
+export const ROLES_VER_VIDA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_VIDA = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
+// Normaliza mayúsculas/minúsculas y espacios extra para evitar falsos negativos
+// si el backend manda el rol con formato distinto (ej: "admin", " ADMIN ", "Admin").
 export function puedeEditar(rol, listaRolesConPermisoCrud) {
-  return listaRolesConPermisoCrud.includes(rol);
+  if (!rol) return false;
+  const rolNormalizado = rol.trim().toUpperCase();
+  return listaRolesConPermisoCrud
+    .map((r) => r.trim().toUpperCase())
+    .includes(rolNormalizado);
 }

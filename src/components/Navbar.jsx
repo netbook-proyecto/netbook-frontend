@@ -7,8 +7,9 @@ import {
   ROLES_VER_ANOTACIONES,
   ROLES_MATRICULAS,
   ROLES_CONFIGURACION,
-  ROLES_VER_ACADEMICO, 
-  ROLES_VER_NOTAS      
+  ROLES_VER_ACADEMICO,
+  ROLES_VER_NOTAS,
+  ROLES_VER_VIDA,
 } from "../utils/permisos";
 
 export default function Navbar() {
@@ -42,7 +43,7 @@ export default function Navbar() {
 
       {/* Contenedor principal de enlaces (Siempre visible para poder mostrar el login en móvil) */}
       <div className={`navbar-links ${menuAbierto ? "navbar-links--abierto" : ""}`}>
-        
+
         {/* Solo mostrar estos enlaces si el usuario existe (está logueado) */}
         {usuario && (
           <>
@@ -81,6 +82,13 @@ export default function Navbar() {
               <>
                 <Link to="/evaluaciones" onClick={cerrarMenu}>Evaluaciones</Link>
                 <Link to="/notas" onClick={cerrarMenu}>Notas</Link>
+              </>
+            )}
+            {ROLES_VER_VIDA.includes(usuario.rol) && (
+              <>
+                <Link to="/hoja-de-vida" onClick={cerrarMenu}>Hoja de Vida</Link>
+                <Link to="/antecedentes-medicos" onClick={cerrarMenu}>Antecedentes Médicos</Link>
+                <Link to="/antecedentes-academicos" onClick={cerrarMenu}>Antecedentes Académicos</Link>
               </>
             )}
           </>

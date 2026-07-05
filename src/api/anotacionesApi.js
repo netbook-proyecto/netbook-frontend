@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const anotacionesApi = axios.create({
-  baseURL: "http://localhost:5005",
+  baseURL: "http://100.27.206.126:5005/api"
 });
 
 anotacionesApi.interceptors.request.use((config) => {

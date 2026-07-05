@@ -21,7 +21,9 @@ import Evaluaciones from "./pages/Evaluaciones";
 import Notas from "./pages/Notas";
 import Bitacora from "./pages/Bitacora";
 import Asistencia from "./pages/Asistencia";
-import Mensajeria from "./pages/Mensajeria";
+import HojaDeVida from "./pages/HojaDeVida";
+import AntecedentesMedicos from "./pages/AntecedentesMedicos";
+import AntecedentesAcademicos from "./pages/AntecedentesAcademicos";
 
 import {
   ROLES_VER_ESTUDIANTES,
@@ -32,6 +34,7 @@ import {
   ROLES_VER_ACADEMICO,
   ROLES_VER_NOTAS,
   ROLES_VER_BITACORA,
+  ROLES_VER_VIDA,
   ROLES_VER_ASISTENCIA,
   ROLES_VER_MENSAJERIA,
 } from "./utils/permisos";
@@ -130,14 +133,34 @@ function App() {
               <Layout><Notas /></Layout>
             </RutaPrivada>
           } />
+
           <Route path="/bitacora" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_BITACORA}>
               <Layout><Bitacora /></Layout>
             </RutaPrivada>
           } />
+
           <Route path="/asistencia" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_ASISTENCIA}>
               <Layout><Asistencia /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/hoja-de-vida" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_VIDA}>
+              <Layout><HojaDeVida /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/antecedentes-medicos" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_VIDA}>
+              <Layout><AntecedentesMedicos /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/antecedentes-academicos" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_VIDA}>
+              <Layout><AntecedentesAcademicos /></Layout>
             </RutaPrivada>
           } />
 

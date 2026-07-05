@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const estudiantesApi = axios.create({
-  baseURL: "http://localhost:5002/api",
+  baseURL: "http://100.27.206.126:5002/api"
 });
 
 estudiantesApi.interceptors.request.use((config) => {

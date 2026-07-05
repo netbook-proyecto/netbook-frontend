@@ -10,7 +10,6 @@ import {
   ROLES_VER_ACADEMICO,
   ROLES_VER_NOTAS,
   ROLES_VER_ASISTENCIA,
-  ROLES_VER_MENSAJERIA,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -139,6 +138,21 @@ export default function Sidebar() {
                   </Link>
                   <Link to="/notas" className={esActivo("/notas")} onClick={cerrar}>
                     📈 Notas
+                  </Link>
+                </>
+              )}
+
+              {ROLES_VER_VIDA.includes(usuario.rol) && (
+                <>
+                  <p className="sidebar-seccion">Hoja de Vida</p>
+                  <Link to="/hoja-de-vida" className={esActivo("/hoja-de-vida")} onClick={cerrar}>
+                    🗂️ Hoja de Vida
+                  </Link>
+                  <Link to="/antecedentes-medicos" className={esActivo("/antecedentes-medicos")} onClick={cerrar}>
+                    🩺 Antecedentes Médicos
+                  </Link>
+                  <Link to="/antecedentes-academicos" className={esActivo("/antecedentes-academicos")} onClick={cerrar}>
+                    🎓 Antecedentes Académicos
                   </Link>
                 </>
               )}

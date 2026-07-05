@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const academicoApi = axios.create({
-  baseURL: "http://100.27.206.126:5004"
-
+const vidaApi = axios.create({
+  baseURL: "http://localhost:5009",
 });
 
-academicoApi.interceptors.request.use((config) => {
+vidaApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -13,4 +12,4 @@ academicoApi.interceptors.request.use((config) => {
   return config;
 });
 
-export default academicoApi;
+export default vidaApi;
