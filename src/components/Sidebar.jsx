@@ -10,6 +10,8 @@ import {
   ROLES_VER_ACADEMICO,
   ROLES_VER_NOTAS,
   ROLES_VER_ASISTENCIA,
+  ROLES_VER_VIDA,
+  ROLES_VER_MENSAJERIA,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -63,6 +65,7 @@ export default function Sidebar() {
         )}
 
         <nav className="sidebar-nav">
+
           <p className="sidebar-seccion">Principal</p>
           <Link to="/dashboard" className={esActivo("/dashboard")} onClick={cerrar}>
             📊 Panel General
@@ -70,47 +73,51 @@ export default function Sidebar() {
           <Link to="/mi-perfil" className={esActivo("/mi-perfil")} onClick={cerrar}>
             👤 Mi Perfil
           </Link>
-          {ROLES_VER_MENSAJERIA.includes(usuario.rol) && (
-            <Link to="/mensajeria" className={esActivo("/mensajeria")} onClick={cerrar}>
-              ✉️ Mensajería
-            </Link>
-          )}
 
           {usuario && (
             <>
+              {ROLES_VER_MENSAJERIA.includes(usuario.rol) && (
+                <Link to="/mensajeria" className={esActivo("/mensajeria")} onClick={cerrar}>
+                  ✉️ Mensajería
+                </Link>
+              )}
+
               {(ROLES_VER_ESTUDIANTES.includes(usuario.rol) ||
                 ROLES_VER_APODERADOS.includes(usuario.rol) ||
                 ROLES_MATRICULAS.includes(usuario.rol) ||
                 ROLES_VER_ANOTACIONES.includes(usuario.rol)) && (
-                  <p className="sidebar-seccion">Gestión</p>
-                )}
+                <p className="sidebar-seccion">Gestión</p>
+              )}
 
               {ROLES_VER_ESTUDIANTES.includes(usuario.rol) && (
                 <Link to="/estudiantes" className={esActivo("/estudiantes")} onClick={cerrar}>
                   👨‍🎓 Estudiantes
                 </Link>
               )}
+
               {ROLES_VER_APODERADOS.includes(usuario.rol) && (
                 <Link to="/apoderados" className={esActivo("/apoderados")} onClick={cerrar}>
                   👨‍👩‍👧 Apoderados
                 </Link>
               )}
+
               {ROLES_MATRICULAS.includes(usuario.rol) && (
                 <Link to="/matriculas" className={esActivo("/matriculas")} onClick={cerrar}>
                   📝 Matrículas
                 </Link>
               )}
+
               {ROLES_VER_ANOTACIONES.includes(usuario.rol) && (
                 <Link to="/anotaciones" className={esActivo("/anotaciones")} onClick={cerrar}>
                   ⚠️ Anotaciones
                 </Link>
               )}
+
               {ROLES_VER_ASISTENCIA.includes(usuario.rol) && (
                 <Link to="/asistencia" className={esActivo("/asistencia")} onClick={cerrar}>
                   📅 Asistencia
                 </Link>
               )}
-
 
               {ROLES_VER_ACADEMICO.includes(usuario.rol) && (
                 <>
@@ -126,6 +133,9 @@ export default function Sidebar() {
                   </Link>
                   <Link to="/asignaturas" className={esActivo("/asignaturas")} onClick={cerrar}>
                     📖 Asignaturas
+                  </Link>
+                  <Link to="/bitacora" className={esActivo("/bitacora")} onClick={cerrar}>
+                    📒 Bitácora
                   </Link>
                 </>
               )}
@@ -165,28 +175,7 @@ export default function Sidebar() {
                   </Link>
                 </>
               )}
-              {ROLES_VER_ACADEMICO.includes(usuario.rol) && (
-                <>
-                  <p className="sidebar-seccion">Académico</p>
-                  <Link to="/cursos" className={esActivo("/cursos")} onClick={cerrar}>
-                    🏫 Cursos
-                  </Link>
-                  <Link to="/niveles" className={esActivo("/niveles")} onClick={cerrar}>
-                    📚 Niveles
-                  </Link>
-                  <Link to="/salas" className={esActivo("/salas")} onClick={cerrar}>
-                    🚪 Salas
-                  </Link>
-                  <Link to="/asignaturas" className={esActivo("/asignaturas")} onClick={cerrar}>
-                    📖 Asignaturas
-                  </Link>
-                  <Link to="/bitacora" className={esActivo("/bitacora")} onClick={cerrar}>
-                    📒 Bitácora
-                  </Link>
-                </>
-              )}
             </>
-
           )}
         </nav>
 
