@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import vidaApi from "../api/vidaApi";
 import { useAuth } from "../context/AuthContext";
 import { ROLES_CRUD_VIDA, puedeEditar } from "../utils/permisos";
@@ -19,7 +19,6 @@ export default function HojaDeVida() {
   const [cargando, setCargando] = useState(false);
   const [editandoId, setEditandoId] = useState(null);
   const [busquedaEstudiante, setBusquedaEstudiante] = useState("");
-
   const [notasAbiertasId, setNotasAbiertasId] = useState(null);
   const [notas, setNotas] = useState([]);
   const [cargandoNotas, setCargandoNotas] = useState(false);
@@ -69,10 +68,7 @@ export default function HojaDeVida() {
       };
 
       if (editandoId) {
-        await vidaApi.put("/hoja-de-vida", {
-          idHojaDeVida: editandoId,
-          ...datos,
-        });
+        await vidaApi.put(`/hoja-de-vida/${editandoId}`, datos);
       } else {
         await vidaApi.post("/hoja-de-vida", datos);
       }
@@ -82,20 +78,10 @@ export default function HojaDeVida() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "No se pudo guardar la hoja de vida. Revisa los datos (¿el estudiante existe en micro-estudiantes?)."
+          "No se pudo guardar la hoja de vida. Revisa los datos."
       );
     } finally {
       setCargando(false);
-    }
-  }
-
-  async function handleEliminar(id) {
-    if (!confirm("¿Seguro que quieres eliminar esta hoja de vida?")) return;
-    try {
-      await vidaApi.delete(`/hoja-de-vida/${id}`);
-      cargarHojas();
-    } catch (err) {
-      setError("No se pudo eliminar la hoja de vida.");
     }
   }
 
@@ -196,8 +182,8 @@ export default function HojaDeVida() {
           </thead>
           <tbody>
             {hojasFiltradas.map((h) => (
-              <>
-                <tr key={h.idHojaDeVida}>
+              <React.Fragment key={h.idHojaDeVida}>
+                <tr>
                   <td>{h.idHojaDeVida}</td>
                   <td>{h.idEstudiante}</td>
                   <td>{h.fechaAperturaExpediente}</td>
@@ -212,25 +198,23 @@ export default function HojaDeVida() {
                   </td>
                   {puedeGestionar && (
                     <td>
-                      <button className="boton-secundario" onClick={() => handleEditar(h)}>
-                        Editar
-                      </button>
                       <button
-                        className="boton-peligro"
-                        onClick={() => handleEliminar(h.idHojaDeVida)}
+                        className="boton-secundario"
+                        onClick={() => handleEditar(h)}
                       >
-                        Eliminar
+                        Editar
                       </button>
                     </td>
                   )}
                 </tr>
+
                 {notasAbiertasId === h.idHojaDeVida && (
-                  <tr key={`${h.idHojaDeVida}-notas`}>
+                  <tr>
                     <td colSpan={puedeGestionar ? 6 : 5}>
                       {cargandoNotas ? (
                         <p>Cargando notas...</p>
                       ) : notas.length === 0 ? (
-                        <p>Este estudiante no tiene notas registradas en micro-academico.</p>
+                        <p>Este estudiante no tiene notas registradas.</p>
                       ) : (
                         <table className="tabla">
                           <thead>
@@ -239,7 +223,7 @@ export default function HojaDeVida() {
                               <th>Calificación</th>
                               <th>Estado</th>
                               <th>Fecha Registro</th>
-                              <th>Observación Docente</th>
+                              <th>Observación</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -258,11 +242,13 @@ export default function HojaDeVida() {
                     </td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             ))}
             {hojasFiltradas.length === 0 && (
               <tr>
-                <td colSpan={puedeGestionar ? 6 : 5}>No hay hojas de vida para mostrar.</td>
+                <td colSpan={puedeGestionar ? 6 : 5}>
+                  No hay hojas de vida para mostrar.
+                </td>
               </tr>
             )}
           </tbody>

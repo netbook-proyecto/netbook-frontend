@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { ROLES_CRUD_VIDA, puedeEditar } from "../utils/permisos";
 
 const FORMULARIO_VACIO = {
+  idEstudiante: "",
   procedenciaColegio: "",
   anioEgresoAnterior: "",
   promedioGeneral: "",
@@ -15,22 +16,27 @@ export default function AntecedentesAcademicos() {
   const puedeGestionar = puedeEditar(usuario.rol, ROLES_CRUD_VIDA);
 
   const [antecedentes, setAntecedentes] = useState([]);
+  const [hojas, setHojas] = useState([]);
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
   const [editandoId, setEditandoId] = useState(null);
 
-  async function cargarAntecedentes() {
+  async function cargarDatos() {
     try {
-      const response = await vidaApi.get("/antecedente-academico");
-      setAntecedentes(response.data);
+      const [resAnt, resHojas] = await Promise.all([
+        vidaApi.get("/antecedente-academico"),
+        vidaApi.get("/hoja-de-vida"),
+      ]);
+      setAntecedentes(resAnt.data);
+      setHojas(resHojas.data);
     } catch (err) {
-      setError("No se pudo cargar la lista de antecedentes académicos.");
+      setError("No se pudo cargar la información.");
     }
   }
 
   useEffect(() => {
-    cargarAntecedentes();
+    cargarDatos();
   }, []);
 
   function handleChange(e) {
@@ -41,6 +47,7 @@ export default function AntecedentesAcademicos() {
   function handleEditar(antecedente) {
     setEditandoId(antecedente.idAntecedenteAcademico);
     setFormulario({
+      idEstudiante: antecedente.idEstudiante,
       procedenciaColegio: antecedente.procedenciaColegio,
       anioEgresoAnterior: antecedente.anioEgresoAnterior,
       promedioGeneral: antecedente.promedioGeneral,
@@ -59,21 +66,30 @@ export default function AntecedentesAcademicos() {
     setCargando(true);
 
     try {
+      const datos = {
+        idEstudiante: Number(formulario.idEstudiante),
+        procedenciaColegio: formulario.procedenciaColegio,
+        anioEgresoAnterior: formulario.anioEgresoAnterior,
+        promedioGeneral: formulario.promedioGeneral,
+        observacionesConductuales: formulario.observacionesConductuales,
+      };
+
       if (editandoId) {
+        // PUT va sin ID en la URL; el ID se manda en el body
         await vidaApi.put("/antecedente-academico", {
           idAntecedenteAcademico: editandoId,
-          ...formulario,
+          ...datos,
         });
       } else {
-        await vidaApi.post("/antecedente-academico", formulario);
+        await vidaApi.post("/antecedente-academico", datos);
       }
 
       cancelarEdicion();
-      cargarAntecedentes();
+      cargarDatos();
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "No se pudo guardar el antecedente académico. Revisa los datos."
+          "No se pudo guardar el antecedente académico."
       );
     } finally {
       setCargando(false);
@@ -81,10 +97,10 @@ export default function AntecedentesAcademicos() {
   }
 
   async function handleEliminar(id) {
-    if (!confirm("¿Seguro que quieres eliminar este antecedente académico?")) return;
+    if (!confirm("¿Seguro que quieres eliminar este antecedente?")) return;
     try {
       await vidaApi.delete(`/antecedente-academico/${id}`);
-      cargarAntecedentes();
+      cargarDatos();
     } catch (err) {
       setError("No se pudo eliminar el antecedente académico.");
     }
@@ -96,6 +112,22 @@ export default function AntecedentesAcademicos() {
 
       {puedeGestionar && (
         <form onSubmit={handleSubmit} className="formulario-inline">
+
+          <select
+            name="idEstudiante"
+            value={formulario.idEstudiante}
+            onChange={handleChange}
+            required
+            disabled={!!editandoId}
+          >
+            <option value="">-- Selecciona estudiante --</option>
+            {hojas.map((h) => (
+              <option key={h.idHojaDeVida} value={h.idEstudiante}>
+                Estudiante ID {h.idEstudiante}
+              </option>
+            ))}
+          </select>
+
           <input
             name="procedenciaColegio"
             placeholder="Colegio de procedencia"
@@ -123,7 +155,7 @@ export default function AntecedentesAcademicos() {
 
           <input
             name="observacionesConductuales"
-            placeholder="Observaciones conductuales (máx. 200 caracteres)"
+            placeholder="Observaciones conductuales"
             value={formulario.observacionesConductuales}
             onChange={handleChange}
             maxLength={200}
@@ -149,10 +181,11 @@ export default function AntecedentesAcademicos() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Colegio de Procedencia</th>
-              <th>Año Egreso Anterior</th>
-              <th>Promedio General</th>
-              <th>Observaciones Conductuales</th>
+              <th>Estudiante</th>
+              <th>Colegio Procedencia</th>
+              <th>Año Egreso</th>
+              <th>Promedio</th>
+              <th>Observaciones</th>
               {puedeGestionar && <th></th>}
             </tr>
           </thead>
@@ -160,13 +193,17 @@ export default function AntecedentesAcademicos() {
             {antecedentes.map((a) => (
               <tr key={a.idAntecedenteAcademico}>
                 <td>{a.idAntecedenteAcademico}</td>
+                <td>{a.idEstudiante ? `Estudiante ID ${a.idEstudiante}` : "-"}</td>
                 <td>{a.procedenciaColegio}</td>
                 <td>{a.anioEgresoAnterior}</td>
                 <td>{a.promedioGeneral}</td>
                 <td>{a.observacionesConductuales}</td>
                 {puedeGestionar && (
                   <td>
-                    <button className="boton-secundario" onClick={() => handleEditar(a)}>
+                    <button
+                      className="boton-secundario"
+                      onClick={() => handleEditar(a)}
+                    >
                       Editar
                     </button>
                     <button
@@ -181,7 +218,9 @@ export default function AntecedentesAcademicos() {
             ))}
             {antecedentes.length === 0 && (
               <tr>
-                <td colSpan={puedeGestionar ? 6 : 5}>No hay antecedentes académicos para mostrar.</td>
+                <td colSpan={puedeGestionar ? 7 : 6}>
+                  No hay antecedentes académicos para mostrar.
+                </td>
               </tr>
             )}
           </tbody>

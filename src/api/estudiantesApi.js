@@ -1,14 +1,12 @@
 import axios from "axios";
 
 const estudiantesApi = axios.create({
-  baseURL: "http://100.27.206.126:5002/api"
+  baseURL: `${import.meta.env.VITE_API_URL}:5002/api`,
 });
 
 estudiantesApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 

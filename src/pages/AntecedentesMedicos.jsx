@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { ROLES_CRUD_VIDA, puedeEditar } from "../utils/permisos";
 
 const FORMULARIO_VACIO = {
+  idEstudiante: "",
   tipoSangre: "",
   alergias: "",
   enfermedadesCronicas: "",
@@ -16,22 +17,27 @@ export default function AntecedentesMedicos() {
   const puedeGestionar = puedeEditar(usuario.rol, ROLES_CRUD_VIDA);
 
   const [antecedentes, setAntecedentes] = useState([]);
+  const [hojas, setHojas] = useState([]);
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
   const [editandoId, setEditandoId] = useState(null);
 
-  async function cargarAntecedentes() {
+  async function cargarDatos() {
     try {
-      const response = await vidaApi.get("/antecedente-medico");
-      setAntecedentes(response.data);
+      const [resAnt, resHojas] = await Promise.all([
+        vidaApi.get("/antecedente-medico"),
+        vidaApi.get("/hoja-de-vida"),
+      ]);
+      setAntecedentes(resAnt.data);
+      setHojas(resHojas.data);
     } catch (err) {
       setError("No se pudo cargar la lista de antecedentes médicos.");
     }
   }
 
   useEffect(() => {
-    cargarAntecedentes();
+    cargarDatos();
   }, []);
 
   function handleChange(e) {
@@ -39,9 +45,11 @@ export default function AntecedentesMedicos() {
     setFormulario((prev) => ({ ...prev, [name]: value }));
   }
 
+  // El GET devuelve los nombres "de base de datos" (grupoSanguineo, alergiasConocidas, etc.)
   function handleEditar(antecedente) {
     setEditandoId(antecedente.idAntecedenteMedico);
     setFormulario({
+      idEstudiante: antecedente.idEstudiante,
       tipoSangre: antecedente.grupoSanguineo,
       alergias: antecedente.alergiasConocidas,
       enfermedadesCronicas: antecedente.condicionesCronicasMedicas,
@@ -61,17 +69,29 @@ export default function AntecedentesMedicos() {
     setCargando(true);
 
     try {
+      // El POST/PUT esperan los nombres del DTO (tipoSangre, alergias, etc.),
+      // NO los nombres de la entidad/base de datos.
+      const datos = {
+        idEstudiante: Number(formulario.idEstudiante),
+        tipoSangre: formulario.tipoSangre,
+        alergias: formulario.alergias,
+        enfermedadesCronicas: formulario.enfermedadesCronicas,
+        medicamentosActuales: formulario.medicamentosActuales,
+        indicacionesEmergencia: formulario.indicacionesEmergencia,
+      };
+
       if (editandoId) {
+        // El PUT va sin ID en la URL; el ID va en el body como idAntecedenteMedico
         await vidaApi.put("/antecedente-medico", {
           idAntecedenteMedico: editandoId,
-          ...formulario,
+          ...datos,
         });
       } else {
-        await vidaApi.post("/antecedente-medico", formulario);
+        await vidaApi.post("/antecedente-medico", datos);
       }
 
       cancelarEdicion();
-      cargarAntecedentes();
+      cargarDatos();
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -86,7 +106,7 @@ export default function AntecedentesMedicos() {
     if (!confirm("¿Seguro que quieres eliminar este antecedente médico?")) return;
     try {
       await vidaApi.delete(`/antecedente-medico/${id}`);
-      cargarAntecedentes();
+      cargarDatos();
     } catch (err) {
       setError("No se pudo eliminar el antecedente médico.");
     }
@@ -98,6 +118,21 @@ export default function AntecedentesMedicos() {
 
       {puedeGestionar && (
         <form onSubmit={handleSubmit} className="formulario-inline">
+          <select
+            name="idEstudiante"
+            value={formulario.idEstudiante}
+            onChange={handleChange}
+            required
+            disabled={!!editandoId}
+          >
+            <option value="">-- Selecciona estudiante --</option>
+            {hojas.map((h) => (
+              <option key={h.idHojaDeVida} value={h.idEstudiante}>
+                Estudiante ID {h.idEstudiante}
+              </option>
+            ))}
+          </select>
+
           <input
             name="tipoSangre"
             placeholder="Grupo sanguíneo (ej: O+)"
@@ -158,6 +193,7 @@ export default function AntecedentesMedicos() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Estudiante</th>
               <th>Grupo Sanguíneo</th>
               <th>Alergias</th>
               <th>Condiciones Crónicas</th>
@@ -170,6 +206,7 @@ export default function AntecedentesMedicos() {
             {antecedentes.map((a) => (
               <tr key={a.idAntecedenteMedico}>
                 <td>{a.idAntecedenteMedico}</td>
+                <td>{a.idEstudiante ? `Estudiante ID ${a.idEstudiante}` : "-"}</td>
                 <td>{a.grupoSanguineo}</td>
                 <td>{a.alergiasConocidas}</td>
                 <td>{a.condicionesCronicasMedicas}</td>
@@ -192,7 +229,7 @@ export default function AntecedentesMedicos() {
             ))}
             {antecedentes.length === 0 && (
               <tr>
-                <td colSpan={puedeGestionar ? 7 : 6}>No hay antecedentes médicos para mostrar.</td>
+                <td colSpan={puedeGestionar ? 8 : 7}>No hay antecedentes médicos para mostrar.</td>
               </tr>
             )}
           </tbody>
