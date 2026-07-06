@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const eventosApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}:5010`,
+  baseURL: `${import.meta.env.VITE_API_URL}:5010`, 
 });
 
 eventosApi.interceptors.request.use((config) => {
