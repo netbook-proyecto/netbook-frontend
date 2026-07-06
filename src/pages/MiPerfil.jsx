@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import estudiantesApi from "../api/estudiantesApi";
 import academicoApi from "../api/academicoApi";
 import { useAuth } from "../context/AuthContext";
+import { ClipboardList, GraduationCap, Users, ShieldCheck, TrendingUp } from "lucide-react";
 
 export default function MiPerfil() {
   const { usuario } = useAuth();
@@ -68,7 +69,9 @@ export default function MiPerfil() {
 
       <div className="perfil-grid">
         <div className="perfil-seccion">
-          <h4 className="perfil-seccion-titulo">📋 Información de cuenta</h4>
+          <h4 className="perfil-seccion-titulo">
+            <ClipboardList size={16} /> Información de cuenta
+          </h4>
           <div className="perfil-dato">
             <span className="perfil-dato-label">Correo</span>
             <span className="perfil-dato-valor">{usuario.correo}</span>
@@ -81,7 +84,9 @@ export default function MiPerfil() {
 
         {datos && usuario.rol === "ESTUDIANTE" && (
           <div className="perfil-seccion">
-            <h4 className="perfil-seccion-titulo">👨‍🎓 Datos del estudiante</h4>
+            <h4 className="perfil-seccion-titulo">
+              <GraduationCap size={16} /> Datos del estudiante
+            </h4>
             <div className="perfil-dato">
               <span className="perfil-dato-label">RUT</span>
               <span className="perfil-dato-valor">{datos.rut}</span>
@@ -112,7 +117,9 @@ export default function MiPerfil() {
 
         {datos && usuario.rol === "APODERADO" && (
           <div className="perfil-seccion">
-            <h4 className="perfil-seccion-titulo">👨‍👩‍👧 Datos del apoderado</h4>
+            <h4 className="perfil-seccion-titulo">
+              <Users size={16} /> Datos del apoderado
+            </h4>
             <div className="perfil-dato">
               <span className="perfil-dato-label">RUT</span>
               <span className="perfil-dato-valor">{datos.rut}</span>
@@ -139,7 +146,9 @@ export default function MiPerfil() {
         {(usuario.rol === "ADMIN" || usuario.rol === "DOCENTE" ||
           usuario.rol === "INSPECTOR" || usuario.rol === "DIRECTIVO") && (
           <div className="perfil-seccion">
-            <h4 className="perfil-seccion-titulo">🔐 Permisos del sistema</h4>
+            <h4 className="perfil-seccion-titulo">
+              <ShieldCheck size={16} /> Permisos del sistema
+            </h4>
             <div className="perfil-dato">
               <span className="perfil-dato-label">Nivel de acceso</span>
               <span className="perfil-dato-valor">
@@ -165,7 +174,9 @@ export default function MiPerfil() {
       {usuario.rol === "ESTUDIANTE" && notas.length > 0 && (
         <div className="perfil-notas">
           <div className="perfil-notas-header">
-            <h4 className="perfil-seccion-titulo">📈 Mis notas</h4>
+            <h4 className="perfil-seccion-titulo">
+              <TrendingUp size={16} /> Mis notas
+            </h4>
             {promedioNotas && (
               <div className={`perfil-promedio ${parseFloat(promedioNotas) >= 4.0 ? "promedio-verde" : "promedio-rojo"}`}>
                 <span className="promedio-numero">{promedioNotas}</span>
@@ -198,7 +209,9 @@ export default function MiPerfil() {
 
       {usuario.rol === "ESTUDIANTE" && !cargando && notas.length === 0 && datos && (
         <div className="perfil-notas">
-          <h4 className="perfil-seccion-titulo">📈 Mis notas</h4>
+          <h4 className="perfil-seccion-titulo">
+            <TrendingUp size={16} /> Mis notas
+          </h4>
           <p className="ayuda">Aún no tienes notas registradas en el sistema.</p>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { School, BarChart3, GraduationCap, TrendingUp, ShieldCheck } from "lucide-react";
 
 export default function Login() {
   const [correoInstitucional, setCorreo] = useState("");
@@ -31,7 +32,7 @@ export default function Login() {
     <div className="login-layout">
       <div className="login-panel-izquierdo">
         <div className="login-brand">
-          <span className="login-brand-icono">🏫</span>
+          <School size={28} color="#60a5fa" />
           <span className="login-brand-nombre">netBOOK</span>
         </div>
         <div className="login-panel-texto">
@@ -40,19 +41,19 @@ export default function Login() {
         </div>
         <div className="login-features">
           <div className="login-feature">
-            <span>📊</span>
+            <BarChart3 size={18} />
             <span>Panel de control en tiempo real</span>
           </div>
           <div className="login-feature">
-            <span>👨‍🎓</span>
+            <GraduationCap size={18} />
             <span>Gestión completa de estudiantes</span>
           </div>
           <div className="login-feature">
-            <span>📈</span>
+            <TrendingUp size={18} />
             <span>Registro de notas y evaluaciones</span>
           </div>
           <div className="login-feature">
-            <span>🔐</span>
+            <ShieldCheck size={18} />
             <span>Acceso seguro por roles</span>
           </div>
         </div>

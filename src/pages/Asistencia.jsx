@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import estudiantesApi from "../api/estudiantesApi";
 import { useAuth } from "../context/AuthContext";
 import { ROLES_CRUD_ASISTENCIA } from "../utils/permisos";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 const FORMULARIO_VACIO = {
   idEstudiante: "",
@@ -129,7 +130,13 @@ export default function Asistencia() {
               <td>{r.idAsistencia}</td>
               <td>{r.idEstudiante}</td>
               <td>{r.fecha}</td>
-              <td>{r.presente ? "✅ Presente" : "❌ Ausente"}</td>
+              <td>
+                {r.presente ? (
+                  <span className="badge badge-verde"><CheckCircle2 size={14} style={{ verticalAlign: "middle", marginRight: "4px" }} />Presente</span>
+                ) : (
+                  <span className="badge badge-rojo"><XCircle size={14} style={{ verticalAlign: "middle", marginRight: "4px" }} />Ausente</span>
+                )}
+              </td>
               <td>{r.observacion ?? "-"}</td>
               {puedeGestionar && (
                 <td>

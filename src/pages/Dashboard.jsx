@@ -4,6 +4,10 @@ import { useAuth } from "../context/AuthContext";
 import estudiantesApi from "../api/estudiantesApi";
 import academicoApi from "../api/academicoApi";
 import anotacionesApi from "../api/anotacionesApi";
+import {
+  GraduationCap, CheckCircle2, School, TrendingUp, AlertTriangle,
+  Users, ClipboardList, NotebookPen, ArrowRight, ClipboardCheck,
+} from "lucide-react";
 
 export default function Dashboard() {
   const { usuario } = useAuth();
@@ -87,56 +91,56 @@ export default function Dashboard() {
 
       <div className="kpi-grid">
         <div className="kpi-tarjeta kpi-azul">
-          <div className="kpi-icono">👨‍🎓</div>
+          <div className="kpi-icono"><GraduationCap size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{estudiantes.length}</span>
             <span className="kpi-label">Estudiantes</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-verde">
-          <div className="kpi-icono">✅</div>
+          <div className="kpi-icono"><CheckCircle2 size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{matriculasActivas}</span>
             <span className="kpi-label">Matrículas Activas</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-celeste">
-          <div className="kpi-icono">🏫</div>
+          <div className="kpi-icono"><School size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{cursos.length}</span>
             <span className="kpi-label">Cursos</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-naranja">
-          <div className="kpi-icono">📈</div>
+          <div className="kpi-icono"><TrendingUp size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{notas.length}</span>
             <span className="kpi-label">Notas registradas</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-rojo">
-          <div className="kpi-icono">⚠️</div>
+          <div className="kpi-icono"><AlertTriangle size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{anotacionesNegativas}</span>
             <span className="kpi-label">Anotaciones negativas</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-morado">
-          <div className="kpi-icono">👨‍👩‍👧</div>
+          <div className="kpi-icono"><Users size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{apoderados.length}</span>
             <span className="kpi-label">Apoderados</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-gris">
-          <div className="kpi-icono">📋</div>
+          <div className="kpi-icono"><ClipboardList size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{matriculas.length}</span>
             <span className="kpi-label">Total Matrículas</span>
           </div>
         </div>
         <div className="kpi-tarjeta kpi-amarillo">
-          <div className="kpi-icono">📝</div>
+          <div className="kpi-icono"><NotebookPen size={26} /></div>
           <div className="kpi-info">
             <span className="kpi-numero">{anotaciones.length}</span>
             <span className="kpi-label">Total Anotaciones</span>
@@ -148,7 +152,9 @@ export default function Dashboard() {
         <div className="dashboard-seccion">
           <div className="dashboard-seccion-header">
             <h3>Últimas matrículas</h3>
-            <Link to="/matriculas" className="dashboard-ver-mas">Ver todas →</Link>
+            <Link to="/matriculas" className="dashboard-ver-mas">
+              Ver todas <ArrowRight size={14} />
+            </Link>
           </div>
           <div className="tabla-wrapper">
             <table className="tabla">
@@ -187,22 +193,22 @@ export default function Dashboard() {
           </div>
           <div className="acciones-rapidas">
             <Link to="/estudiantes" className="accion-rapida accion-azul">
-              <span>👨‍🎓</span><span>Nuevo Estudiante</span>
+              <GraduationCap size={22} /><span>Nuevo Estudiante</span>
             </Link>
             <Link to="/apoderados" className="accion-rapida accion-verde">
-              <span>👨‍👩‍👧</span><span>Nuevo Apoderado</span>
+              <Users size={22} /><span>Nuevo Apoderado</span>
             </Link>
             <Link to="/matriculas" className="accion-rapida accion-celeste">
-              <span>📝</span><span>Nueva Matrícula</span>
+              <ClipboardList size={22} /><span>Nueva Matrícula</span>
             </Link>
             <Link to="/anotaciones" className="accion-rapida accion-naranja">
-              <span>⚠️</span><span>Nueva Anotación</span>
+              <AlertTriangle size={22} /><span>Nueva Anotación</span>
             </Link>
             <Link to="/notas" className="accion-rapida accion-morado">
-              <span>📈</span><span>Registrar Nota</span>
+              <TrendingUp size={22} /><span>Registrar Nota</span>
             </Link>
             <Link to="/cursos" className="accion-rapida accion-gris">
-              <span>🏫</span><span>Ver Cursos</span>
+              <School size={22} /><span>Ver Cursos</span>
             </Link>
           </div>
         </div>
@@ -210,7 +216,9 @@ export default function Dashboard() {
 
       <div className="dashboard-seccion-header" style={{marginTop: "2rem"}}>
         <h3>Estudiantes registrados</h3>
-        <Link to="/estudiantes" className="dashboard-ver-mas">Ver todos →</Link>
+        <Link to="/estudiantes" className="dashboard-ver-mas">
+          Ver todos <ArrowRight size={14} />
+        </Link>
       </div>
       <div className="tabla-wrapper">
         <table className="tabla">
