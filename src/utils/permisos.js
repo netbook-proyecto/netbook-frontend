@@ -40,6 +40,10 @@ export const ROLES_CRUD_VIDA = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 export const ROLES_VER_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
 export const ROLES_CRUD_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
 
+// Eventos del calendario escolar: todos pueden verlos, solo gestión los crea/edita
+export const ROLES_VER_EVENTOS = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
+export const ROLES_CRUD_EVENTOS = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
+
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 // Normaliza mayúsculas/minúsculas y espacios extra para evitar falsos negativos
 // si el backend manda el rol con formato distinto (ej: "admin", " ADMIN ", "Admin").

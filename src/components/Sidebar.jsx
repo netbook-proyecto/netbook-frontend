@@ -12,6 +12,7 @@ import {
   ROLES_VER_ASISTENCIA,
   ROLES_VER_VIDA,
   ROLES_VER_MENSAJERIA,
+  ROLES_VER_EVENTOS,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -81,13 +82,18 @@ export default function Sidebar() {
                   ✉️ Mensajería
                 </Link>
               )}
+              {ROLES_VER_EVENTOS.includes(usuario.rol) && (
+                <Link to="/eventos" className={esActivo("/eventos")} onClick={cerrar}>
+                  📅 Eventos
+                </Link>
+              )}
 
               {(ROLES_VER_ESTUDIANTES.includes(usuario.rol) ||
                 ROLES_VER_APODERADOS.includes(usuario.rol) ||
                 ROLES_MATRICULAS.includes(usuario.rol) ||
                 ROLES_VER_ANOTACIONES.includes(usuario.rol)) && (
-                <p className="sidebar-seccion">Gestión</p>
-              )}
+                  <p className="sidebar-seccion">Gestión</p>
+                )}
 
               {ROLES_VER_ESTUDIANTES.includes(usuario.rol) && (
                 <Link to="/estudiantes" className={esActivo("/estudiantes")} onClick={cerrar}>

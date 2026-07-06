@@ -25,6 +25,7 @@ import Asistencia from "./pages/Asistencia";
 import HojaDeVida from "./pages/HojaDeVida";
 import AntecedentesMedicos from "./pages/AntecedentesMedicos";
 import AntecedentesAcademicos from "./pages/AntecedentesAcademicos";
+import Eventos from "./pages/Eventos";
 
 import {
   ROLES_VER_ESTUDIANTES,
@@ -38,6 +39,7 @@ import {
   ROLES_VER_VIDA,
   ROLES_VER_ASISTENCIA,
   ROLES_VER_MENSAJERIA,
+  ROLES_VER_EVENTOS,
 } from "./utils/permisos";
 
 import "./App.css";
@@ -162,6 +164,11 @@ function App() {
           <Route path="/antecedentes-academicos" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_VIDA}>
               <Layout><AntecedentesAcademicos /></Layout>
+            </RutaPrivada>
+          } />
+          <Route path="/eventos" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_EVENTOS}>
+              <Layout><Eventos /></Layout>
             </RutaPrivada>
           } />
 
