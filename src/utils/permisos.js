@@ -44,6 +44,10 @@ export const ROLES_CRUD_MENSAJERIA = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMI
 export const ROLES_VER_EVENTOS = ["DOCENTE", "INSPECTOR", "DIRECTIVO", "ADMIN", "ESTUDIANTE"];
 export const ROLES_CRUD_EVENTOS = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
 
+// Reportes y Filtros de Reporte: visibilidad restringida a roles de gestión/dirección
+export const ROLES_VER_REPORTES = ["INSPECTOR", "DIRECTIVO", "ADMIN"];
+export const ROLES_CRUD_REPORTES = ["DIRECTIVO", "ADMIN"];
+
 // Función de ayuda: ¿este rol puede hacer CRUD (crear/editar/eliminar)?
 // Normaliza mayúsculas/minúsculas y espacios extra para evitar falsos negativos
 // si el backend manda el rol con formato distinto (ej: "admin", " ADMIN ", "Admin").

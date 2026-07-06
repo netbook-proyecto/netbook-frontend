@@ -13,6 +13,7 @@ import {
   ROLES_VER_VIDA,
   ROLES_VER_MENSAJERIA,
   ROLES_VER_EVENTOS,
+  ROLES_VER_REPORTES,
 } from "../utils/permisos";
 
 export default function Sidebar() {
@@ -178,6 +179,18 @@ export default function Sidebar() {
                   <p className="sidebar-seccion">Sistema</p>
                   <Link to="/configuracion" className={esActivo("/configuracion")} onClick={cerrar}>
                     ⚙️ Configuración
+                  </Link>
+                </>
+              )}
+
+              {ROLES_VER_REPORTES.includes(usuario.rol) && (
+                <>
+                  <p className="sidebar-seccion">Reportes</p>
+                  <Link to="/reportes" className={esActivo("/reportes")} onClick={cerrar}>
+                    📊 Reportes
+                  </Link>
+                  <Link to="/filtros-reporte" className={esActivo("/filtros-reporte")} onClick={cerrar}>
+                    🔎 Filtros de Reporte
                   </Link>
                 </>
               )}

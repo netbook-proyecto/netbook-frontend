@@ -26,6 +26,8 @@ import HojaDeVida from "./pages/HojaDeVida";
 import AntecedentesMedicos from "./pages/AntecedentesMedicos";
 import AntecedentesAcademicos from "./pages/AntecedentesAcademicos";
 import Eventos from "./pages/Eventos";
+import Reportes from "./pages/Reportes";
+import FiltrosReporte from "./pages/FiltrosReporte";
 
 import {
   ROLES_VER_ESTUDIANTES,
@@ -40,6 +42,7 @@ import {
   ROLES_VER_ASISTENCIA,
   ROLES_VER_MENSAJERIA,
   ROLES_VER_EVENTOS,
+  ROLES_VER_REPORTES,
 } from "./utils/permisos";
 
 import "./App.css";
@@ -83,6 +86,7 @@ function App() {
               <Layout><Anotaciones /></Layout>
             </RutaPrivada>
           } />
+
           <Route path="/mensajeria" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_MENSAJERIA}>
               <Layout><Mensajeria /></Layout>
@@ -166,9 +170,22 @@ function App() {
               <Layout><AntecedentesAcademicos /></Layout>
             </RutaPrivada>
           } />
+
           <Route path="/eventos" element={
             <RutaPrivada rolesPermitidos={ROLES_VER_EVENTOS}>
               <Layout><Eventos /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/reportes" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_REPORTES}>
+              <Layout><Reportes /></Layout>
+            </RutaPrivada>
+          } />
+
+          <Route path="/filtros-reporte" element={
+            <RutaPrivada rolesPermitidos={ROLES_VER_REPORTES}>
+              <Layout><FiltrosReporte /></Layout>
             </RutaPrivada>
           } />
 
