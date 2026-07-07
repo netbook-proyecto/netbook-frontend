@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const anotacionesApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
+  baseURL: `${import.meta.env.VITE_API_URL}:5005`,
 });
 
 anotacionesApi.interceptors.request.use((config) => {

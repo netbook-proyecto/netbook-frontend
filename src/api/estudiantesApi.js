@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const estudiantesApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api`,
+  baseURL: `${import.meta.env.VITE_API_URL}:5002/api`,
 });
 
 estudiantesApi.interceptors.request.use((config) => {

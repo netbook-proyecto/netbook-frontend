@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const vidaApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
+  baseURL: `${import.meta.env.VITE_API_URL}:5009`,
 });
 
 vidaApi.interceptors.request.use((config) => {

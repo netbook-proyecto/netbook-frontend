@@ -5,3 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/",
 })
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
