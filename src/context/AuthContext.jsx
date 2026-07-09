@@ -60,3 +60,6 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
+
+
+//Hola este front esta realizado por Cristopher Candi y Matias Reyes
