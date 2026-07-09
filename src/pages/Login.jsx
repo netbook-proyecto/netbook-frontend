@@ -67,15 +67,10 @@ export default function Login() {
           </div>
           <form onSubmit={handleSubmit} className="login-form">
             <div className="login-campo">
-<<<<<<< HEAD
               <label htmlFor="correoInstitucional">Correo institucional</label>
               <input
                 id="correoInstitucional"
                 name="correoInstitucional"
-=======
-              <label>Correo institucional</label>
-              <input
->>>>>>> 64103197cc43c0e05ae6a537489c8b72e66a697c
                 type="email"
                 value={correoInstitucional}
                 onChange={(e) => setCorreo(e.target.value)}
@@ -85,15 +80,10 @@ export default function Login() {
               />
             </div>
             <div className="login-campo">
-<<<<<<< HEAD
               <label htmlFor="contrasenia">Contraseña</label>
               <input
                 id="contrasenia"
                 name="contrasenia"
-=======
-              <label>Contraseña</label>
-              <input
->>>>>>> 64103197cc43c0e05ae6a537489c8b72e66a697c
                 type="password"
                 value={contrasenia}
                 onChange={(e) => setContrasenia(e.target.value)}
